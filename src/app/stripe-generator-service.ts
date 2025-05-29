@@ -12,6 +12,14 @@ export class StripeGeneratorService {
   }
 
   calculatePattern(colors: string[], rows: number) {
+
+    if (rows == null || rows <= 0) {
+      rows = 1;
+    }
+
+    if (rows > 10000) {
+      rows = 10000;
+    }
  
     const stripes = [];
     console.log(colors);
