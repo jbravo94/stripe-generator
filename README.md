@@ -18,3 +18,12 @@
 ### Ubuntu Apache Webserver 
 * Copy the folder `dist/stripe-generator/browser` under `/var/www/html/stripe-generator`
 * Add a redirection rule `Redirect 301 /stripe-generator/stripe-generator/stripe-generator /stripe-generator` in your appropriate config under `/etc/apache2/sites-available` and restart apache via `systemctl restart apache2`
+
+
+# TODO
+
+* Add color names from nearest available colorname in print as column 
+* Add additional column for manual check
+* Add colors as text block
+* Add multiple colors via extendable list
+* A probability pattern and available line blocks
