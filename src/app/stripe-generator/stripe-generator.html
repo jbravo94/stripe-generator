@@ -1,3 +1,7 @@
+<p>
+    This generator randomly creates a chunk between 1 and 4 lines and creates a stripe pattern from the selected colors up to the given row number.
+</p>
+
 <form (submit)="submit($event)">
   <div class="form-group">
     <label for="colorOne">Color 1</label>
@@ -15,9 +19,17 @@
     <small id="colorTwoHelp" class="form-text text-muted">Select a the number</small>
   </div>
   <br />
-  <button type="submit" class="btn btn-primary">Generate</button>
-  <button type="button" id="print-button" onClick="window.print()" class="btn btn-secondary">Print</button>
-
+  
+  <table class="full">
+    <tr>
+        <td class="half">
+            <button type="submit" class="btn btn-primary form-action">Generate</button>
+        </td>
+        <td class="half">
+            <button type="button" id="print-button" onClick="window.print()" class="btn btn-secondary form-action">Print</button>
+        </td>
+    </tr>
+  </table>
 </form>
 
 

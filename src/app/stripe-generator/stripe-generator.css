@@ -6,8 +6,10 @@
     margin-top: 1vw;
 }
 
-#print-button {
-    margin-left: 2vw;
+
+.btn {
+    margin-left: 1vw;
+    margin-right: 1vw;
 }
 
 .strip-row {
@@ -18,4 +20,16 @@
     width: 1%;
     text-align: right;
     padding-right: 5px;
+}
+
+.full {
+    width: 100%;
+}
+
+.half {
+    width: 50%;
+}
+
+.form-action {
+    width: -webkit-fill-available;
 }
