@@ -1,0 +1,11 @@
+.border-space {
+    margin: 2vw;
+}
+
+@media print {
+  app-root > * { display: none; }
+  app-root app-print-layout { display: block; }
+  @page {
+    size: A4;
+  }
+}

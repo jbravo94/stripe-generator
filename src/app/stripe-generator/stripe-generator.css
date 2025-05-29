@@ -1,0 +1,21 @@
+.strip-container {
+    margin: 2vw;
+}
+
+.form-group {
+    margin-top: 1vw;
+}
+
+#print-button {
+    margin-left: 2vw;
+}
+
+.strip-row {
+    height: 1vw;
+}
+
+.stripe-row-numbering {
+    width: 1%;
+    text-align: right;
+    padding-right: 5px;
+}
