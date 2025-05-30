@@ -1,32 +1,36 @@
-<p>
+<p [hidden]="printFriendly">
     This generator randomly creates a chunk between 1 and 4 lines and creates a stripe pattern from the selected colors up to the given row number.
 </p>
 
-<form (submit)="submit($event)">
+<form [formGroup]="stripeGeneratorForm" (submit)="submit($event)" [hidden]="printFriendly">
   <div class="form-group">
     <label for="colorOne">Color 1</label>
-    <input type="color" class="form-control" id="colorOne" aria-describedby="colorOne" placeholder="Select a color" [formControl]="colorOne">
+    <input type="color" class="form-control" id="colorOne" aria-describedby="colorOne" placeholder="Select a color" formControlName="colorOne">
     <small id="colorOneHelp" class="form-text text-muted">Select first color</small>
   </div>
   <div class="form-group">
     <label for="colorTwo">Color 2</label>
-    <input type="color" class="form-control" id="colorTwo" aria-describedby="colorTwo" placeholder="Select a color" [formControl]="colorTwo">
+    <input type="color" class="form-control" id="colorTwo" aria-describedby="colorTwo" placeholder="Select a color" formControlName="colorTwo">
     <small id="colorTwoHelp" class="form-text text-muted">Select second color</small>
   </div>
   <div class="form-group">
     <label for="rows">Rows</label>
-    <input type="number" inputmode="numeric" min="1" max="10000" class="form-control" id="rows" placeholder="Select a the number" [formControl]="rows">
+    <input type="number" inputmode="numeric" min="1" max="10000" class="form-control" id="rows" placeholder="Select a the number" formControlName="rows">
     <small id="colorTwoHelp" class="form-text text-muted">Select a the number</small>
+    <div class="invalid-feedback" [hidden]="isFormControlValid('rows')">Values between 1 and 10000 are only allowed!</div>
   </div>
   <br />
   
   <table class="full">
     <tr>
         <td class="half">
-            <button type="submit" class="btn btn-primary form-action">Generate</button>
+            <button type="submit" [disabled]="!stripeGeneratorForm.valid" class="btn btn-primary form-action"><strong>Generate</strong></button>
         </td>
-        <td class="half">
-            <button type="button" id="print-button" onClick="window.print()" class="btn btn-secondary form-action">Print</button>
+        <td class="fourth">
+            <button type="button" id="print-button" onClick="window.print()" class="btn btn-secondary form-action"><strong>Print</strong></button>
+        </td>
+        <td class="fourth">
+            <button type="button" (click)="togglePrintFriendly()" class="btn btn-secondary form-action">Show&nbsp;Print&nbsp;Friendly</button>
         </td>
     </tr>
   </table>
@@ -34,7 +38,7 @@
 
 <br />
 
-<table class="strip-container">
+<table class="strip-container" [hidden]="printFriendly">
 @for (strip of pattern; track $index) {
     <tr>
         <td class="stripe-row-numbering">{{$index + 1}}.</td>
@@ -43,3 +47,25 @@
     </tr>
 }
 </table>
+
+
+<div [hidden]="!printFriendly">
+<button class="half" type="button" (click)="togglePrintFriendly()">Back to Configuration</button>
+<button class="half" type="button" onClick="window.print()">Print</button>
+<br>
+<br>
+<table class="print-table full">
+  <tr>
+      <th>Row</th>
+      <th>Color</th>
+      <th>Note</th>
+  </tr>
+  @for (strip of pattern; track $index) {
+  <tr>
+      <td>{{$index + 1}}.</td>
+      <td>{{getColorNameForCode(strip)}}</td>
+      <td></td>
+  </tr>
+  }
+</table>
+</div>

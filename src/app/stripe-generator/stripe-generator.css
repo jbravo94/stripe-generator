@@ -35,6 +35,19 @@
     width: 50%;
 }
 
+.fourth {
+    width: 25%;
+}
+
 .form-action {
     width: -webkit-fill-available;
+}
+
+.invalid-feedback {
+    display: inherit;
+}
+
+.print-table * {
+    border-width: 1px;
+    border-color: black;
 }

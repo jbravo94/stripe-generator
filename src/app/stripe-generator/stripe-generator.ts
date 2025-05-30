@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { StripeGeneratorService } from '../stripe-generator-service';
 import { LocalStorageService } from '../local-storage-service';
 import { ColorService } from '../color-service';
@@ -16,20 +16,35 @@ export class StripeGenerator {
   private defaultColorTwo = '#00ff00';
   private defaultRows = '50';
 
-  colorOne = new FormControl('');
-  colorTwo = new FormControl('');
-  rows = new FormControl('');
+  stripeGeneratorForm: FormGroup;
 
   pattern: any = [];
+
+  printFriendly = false;
 
   constructor(
     private stripeGeneratorService: StripeGeneratorService, 
     private localStorageService: LocalStorageService,
-    private colorService: ColorService) {
+    private colorService: ColorService,
+    private formBuilder: FormBuilder) {
     
-    this.colorOne.setValue(localStorageService.getValueForKeyOrDefault("color-one", this.defaultColorOne));
-    this.colorTwo.setValue(localStorageService.getValueForKeyOrDefault("color-two", this.defaultColorTwo));
-    this.rows.setValue(localStorageService.getValueForKeyOrDefault("rows", this.defaultRows));
+    const colorOne = localStorageService.getValueForKeyOrDefault("color-one", this.defaultColorOne);
+    const colorTwo = localStorageService.getValueForKeyOrDefault("color-two", this.defaultColorTwo);
+    const rows = localStorageService.getValueForKeyOrDefault("rows", this.defaultRows);
+
+    this.stripeGeneratorForm = formBuilder.group({
+      colorOne: [colorOne, [
+          Validators.required
+      ]],
+      colorTwo: [colorTwo, [
+          Validators.required
+      ]],
+      rows: [rows, [
+          Validators.required,
+          Validators.min(1),
+          Validators.max(10000)
+      ]],
+    })
 
     this.generatePattern();  
   }
@@ -38,20 +53,30 @@ export class StripeGenerator {
     return this.colorService.getColorNameByHexCode(hexCodeString);
   }
 
+  isFormControlValid(formControlName: string) {
+    return this.stripeGeneratorForm.get(formControlName)?.valid;
+  }
+
+  togglePrintFriendly() {
+    this.printFriendly = !this.printFriendly;
+  }
+
   submit(e: SubmitEvent) {
     e.preventDefault();
 
-    this.colorOne.setValue(this.colorService.getClosestTextColor(this.colorOne.value || this.defaultColorOne));
-    this.colorTwo.setValue(this.colorService.getClosestTextColor(this.colorTwo.value || this.defaultColorOne));
+    this.stripeGeneratorForm.patchValue({
+      colorOne: this.colorService.getClosestTextColor(this.stripeGeneratorForm.controls['colorOne'].value || this.defaultColorOne),
+      colorTwo: this.colorService.getClosestTextColor(this.stripeGeneratorForm.controls['colorTwo'].value || this.defaultColorTwo),
+    });
 
-    this.localStorageService.setValueForKey("color-one", this.colorOne.value || this.defaultColorOne);
-    this.localStorageService.setValueForKey("color-two", this.colorTwo.value || this.defaultColorTwo);
-    this.localStorageService.setValueForKey("rows", this.rows.value || this.defaultRows);
+    this.localStorageService.setValueForKey("color-one", this.stripeGeneratorForm.controls['colorOne'].value || this.defaultColorOne);
+    this.localStorageService.setValueForKey("color-two", this.stripeGeneratorForm.controls['colorTwo'].value || this.defaultColorTwo);
+    this.localStorageService.setValueForKey("rows", this.stripeGeneratorForm.controls['rows'].value || this.defaultRows);
 
     this.generatePattern();
   }
 
   generatePattern() {
-    this.pattern = this.stripeGeneratorService.calculatePattern([this.colorOne.value || this.defaultColorOne, this.colorTwo.value || this.defaultColorTwo], parseInt(this.rows.value || this.defaultRows));
+    this.pattern = this.stripeGeneratorService.calculatePattern([this.stripeGeneratorForm.controls['colorOne'].value || this.defaultColorOne, this.stripeGeneratorForm.controls['colorTwo'].value || this.defaultColorTwo], parseInt(this.stripeGeneratorForm.controls['rows'].value || this.defaultRows));
   }
 }

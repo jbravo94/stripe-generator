@@ -22,7 +22,10 @@
 
 # TODO
 
-* Add additional column for manual check
 * Add multiple colors via extendable list
 * A probability pattern and available line blocks
-* Add form validation for exceeding input number
+
+# Sources
+
+* https://www.w3.org/wiki/CSS3/Color/Extended_color_keywords
+* https://github.com/dtao/nearest-color/blob/master/nearestColor.js
