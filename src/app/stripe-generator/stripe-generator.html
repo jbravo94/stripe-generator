@@ -2,23 +2,73 @@
     This generator randomly creates a chunk between 1 and 4 lines and creates a stripe pattern from the selected colors up to the given row number.
 </p>
 
-<form [formGroup]="stripeGeneratorForm" (submit)="submit($event)" [hidden]="printFriendly">
-  <div class="form-group">
+<form [formGroup]="stripeGeneratorForm" class="form-group" (submit)="submit($event)" [hidden]="printFriendly">
+  <div class="form-element">
     <label for="colorOne">Color 1</label>
     <input type="color" class="form-control" id="colorOne" aria-describedby="colorOne" placeholder="Select a color" formControlName="colorOne">
     <small id="colorOneHelp" class="form-text text-muted">Select first color</small>
   </div>
-  <div class="form-group">
+  <div class="form-element">
     <label for="colorTwo">Color 2</label>
     <input type="color" class="form-control" id="colorTwo" aria-describedby="colorTwo" placeholder="Select a color" formControlName="colorTwo">
     <small id="colorTwoHelp" class="form-text text-muted">Select second color</small>
   </div>
-  <div class="form-group">
+  <div class="form-element">
     <label for="rows">Rows</label>
-    <input type="number" inputmode="numeric" min="1" max="10000" class="form-control" id="rows" placeholder="Select a the number" formControlName="rows">
+    <input type="number" inputmode="numeric" class="form-control" id="rows" placeholder="Select a the number" formControlName="rows">
     <small id="colorTwoHelp" class="form-text text-muted">Select a the number</small>
     <div class="invalid-feedback" [hidden]="isFormControlValid('rows')">Values between 1 and 10000 are only allowed!</div>
   </div>
+
+  <br />
+
+  <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="flush-headingOne">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+          Advanced
+        </button>
+      </h2>
+      <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+        <div class="accordion-body" formArrayName="stripePatternConfiguration">
+          <div class="form-element">
+            <div style="display: flex; justify-content: space-between;">
+              <label for="rows">Stripe Pattern Configuration</label>
+              <div>
+                <button type="button" (click)="appendStripePatternConfigurationItem()" class="btn btn-primary">Add +</button>
+                <button type="button" (click)="popStripePatternConfigurationItem()" class="btn btn-primary">Remove -</button>
+                <button type="button" (click)="resetStripePatternConfigurationItem()" class="btn btn-primary">Reset</button>
+              </div>
+            </div>
+            <br>
+
+            <table class="form-table full">
+              <tr>
+                <th>Line Number</th>
+                <th>Used</th>
+                <th>Probability</th>
+              </tr>
+              @for (stripConfigItem of stripePatternConfiguration; track $index; let idx = $index) {
+              
+              <tr class="form-group" [formGroupName]="idx">
+                  <td>{{idx + 1}}</td>
+                  <td>
+                    <input type="checkbox" class="form-check-input" placeholder="Check if required" formControlName="used">
+                  </td>
+                  <td>
+                    <input type="range" min="1" max="200" class="form-control" placeholder="Select a the number" formControlName="probability">
+                    {{stripConfigItem.get('probability')?.value}}
+                  </td>
+              </tr>
+              }
+            </table>
+            <small id="colorTwoHelp" class="form-text text-muted">Maximum chunk size: {{stripePatternConfiguration.length}} lines</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <br />
   
   <table class="full">

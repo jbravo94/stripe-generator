@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { StripeGeneratorService } from '../stripe-generator-service';
 import { LocalStorageService } from '../local-storage-service';
 import { ColorService } from '../color-service';
@@ -44,9 +44,50 @@ export class StripeGenerator {
           Validators.min(1),
           Validators.max(10000)
       ]],
+      stripePatternConfiguration: this.formBuilder.array([1,2,3,4].map((e) =>
+        this.formBuilder.group({
+          used: [true],
+          probability: [100]
+        })
+      ))
     })
 
     this.generatePattern();  
+  }
+
+  appendStripePatternConfigurationItem() {
+    const stripePatternConfiguration = this.stripeGeneratorForm.get('stripePatternConfiguration') as FormArray;
+
+    stripePatternConfiguration.controls.push(
+      this.formBuilder.group({
+        used: [true],
+        probability: [100]
+      })
+    )
+  }
+
+  resetStripePatternConfigurationItem() {
+    const stripePatternConfiguration = this.stripeGeneratorForm.get('stripePatternConfiguration') as FormArray;
+
+    stripePatternConfiguration.controls.splice(4);
+
+    stripePatternConfiguration.controls.forEach((e) => {
+      e.patchValue({used: true, probability: 100});
+    });
+  }
+
+  popStripePatternConfigurationItem() {
+    const stripePatternConfiguration = this.stripeGeneratorForm.get('stripePatternConfiguration') as FormArray;
+
+    stripePatternConfiguration.controls.pop();
+  }
+
+  get stripePatternConfiguration(): FormControl[] {
+    return (this.stripeGeneratorForm.get('stripePatternConfiguration') as FormArray).controls as FormControl[];
+  }
+
+  getValue(formControlName: string) {
+    return this.stripeGeneratorForm.get(formControlName)?.value;
   }
 
   getColorNameForCode(hexCodeString: string) {

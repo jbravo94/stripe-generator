@@ -51,3 +51,8 @@
     border-width: 1px;
     border-color: black;
 }
+
+.form-table * {
+    text-align: center;
+    border-width: 1px;
+}
