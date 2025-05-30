@@ -22,8 +22,7 @@
 
 # TODO
 
-* Add color names from nearest available colorname in print as column 
 * Add additional column for manual check
-* Add colors as text block
 * Add multiple colors via extendable list
 * A probability pattern and available line blocks
+* Add form validation for exceeding input number
