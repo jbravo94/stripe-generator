@@ -24,6 +24,6 @@
 * Fix reset for advanced config if less that 4 items
 
 # Sources
-* https://www.w3.org/wiki/CSS3/Color/Extended_color_keywords
-* https://github.com/dtao/nearest-color/blob/master/nearestColor.js
-* https://stackoverflow.com/a/28933315
+* Comprehensive list of color names https://www.w3.org/wiki/CSS3/Color/Extended_color_keywords
+* Nearest neighbor search (Find closest RGB vector length from color picker to determine color name) https://github.com/dtao/nearest-color/blob/master/nearestColor.js
+* Pattern calculation with probabilities https://stackoverflow.com/a/28933315
