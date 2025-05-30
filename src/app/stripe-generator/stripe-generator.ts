@@ -58,7 +58,7 @@ export class StripeGenerator {
   appendStripePatternConfigurationItem() {
     const stripePatternConfiguration = this.stripeGeneratorForm.get('stripePatternConfiguration') as FormArray;
 
-    stripePatternConfiguration.controls.push(
+    stripePatternConfiguration.push(
       this.formBuilder.group({
         used: [true],
         probability: [100]
@@ -67,22 +67,28 @@ export class StripeGenerator {
   }
 
   resetStripePatternConfigurationItem() {
-    const stripePatternConfiguration = this.stripeGeneratorForm.get('stripePatternConfiguration') as FormArray;
+    this.stripePatternConfigurationControls.splice(4);
 
-    stripePatternConfiguration.controls.splice(4);
-
-    stripePatternConfiguration.controls.forEach((e) => {
+    this.stripePatternConfigurationControls.forEach((e) => {
       e.patchValue({used: true, probability: 100});
     });
+
   }
 
   popStripePatternConfigurationItem() {
-    const stripePatternConfiguration = this.stripeGeneratorForm.get('stripePatternConfiguration') as FormArray;
-
-    stripePatternConfiguration.controls.pop();
+    this.stripePatternConfigurationControls.pop();
   }
 
-  get stripePatternConfiguration(): FormControl[] {
+  randomizeStripePatternConfiguration() {
+    this.stripePatternConfigurationControls.forEach((e) => {
+      const randomUsage = Math.random() < 0.70;
+      const randomProbability = Math.round(Math.random() * 199 + 1);
+
+      e.patchValue({used: randomUsage, probability: randomProbability});
+    });
+  }
+
+  get stripePatternConfigurationControls(): FormControl[] {
     return (this.stripeGeneratorForm.get('stripePatternConfiguration') as FormArray).controls as FormControl[];
   }
 
@@ -106,18 +112,23 @@ export class StripeGenerator {
     e.preventDefault();
 
     this.stripeGeneratorForm.patchValue({
-      colorOne: this.colorService.getClosestTextColor(this.stripeGeneratorForm.controls['colorOne'].value || this.defaultColorOne),
-      colorTwo: this.colorService.getClosestTextColor(this.stripeGeneratorForm.controls['colorTwo'].value || this.defaultColorTwo),
+      colorOne: this.colorService.getClosestTextColor(this.getValue('colorOne') || this.defaultColorOne),
+      colorTwo: this.colorService.getClosestTextColor(this.getValue('colorTwo') || this.defaultColorTwo),
     });
 
-    this.localStorageService.setValueForKey("color-one", this.stripeGeneratorForm.controls['colorOne'].value || this.defaultColorOne);
-    this.localStorageService.setValueForKey("color-two", this.stripeGeneratorForm.controls['colorTwo'].value || this.defaultColorTwo);
-    this.localStorageService.setValueForKey("rows", this.stripeGeneratorForm.controls['rows'].value || this.defaultRows);
+    this.localStorageService.setValueForKey("color-one", this.getValue('colorOne') || this.defaultColorOne);
+    this.localStorageService.setValueForKey("color-two", this.getValue('colorTwo') || this.defaultColorTwo);
+    this.localStorageService.setValueForKey("rows", this.getValue('rows') || this.defaultRows);
 
     this.generatePattern();
   }
 
   generatePattern() {
-    this.pattern = this.stripeGeneratorService.calculatePattern([this.stripeGeneratorForm.controls['colorOne'].value || this.defaultColorOne, this.stripeGeneratorForm.controls['colorTwo'].value || this.defaultColorTwo], parseInt(this.stripeGeneratorForm.controls['rows'].value || this.defaultRows));
+    const colorOne = this.getValue('colorOne') || this.defaultColorOne;
+    const colorTwo = this.getValue('colorTwo') || this.defaultColorTwo;
+    const rows = parseInt(this.getValue('rows') || this.defaultRows);
+    const distributionOptions = this.stripeGeneratorForm.get('stripePatternConfiguration')?.value;
+
+    this.pattern = this.stripeGeneratorService.calculatePattern([colorOne, colorTwo], rows, distributionOptions);
   }
 }

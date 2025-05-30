@@ -1,5 +1,4 @@
 # Stripe Generator
-
 ![Screenshot](screenshot.png?raw=true "Screenshot")
 
 ## Prepare
@@ -21,11 +20,10 @@
 
 
 # TODO
-
 * Add multiple colors via extendable list
-* A probability pattern and available line blocks
+* Fix reset for advanced config if less that 4 items
 
 # Sources
-
 * https://www.w3.org/wiki/CSS3/Color/Extended_color_keywords
 * https://github.com/dtao/nearest-color/blob/master/nearestColor.js
+* https://stackoverflow.com/a/28933315

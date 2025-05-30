@@ -1,5 +1,6 @@
 <p [hidden]="printFriendly">
-    This generator randomly creates a chunk between 1 and 4 lines and creates a stripe pattern from the selected colors up to the given row number.
+    This generator randomly creates a chunk between 1 and 4 lines and 
+    creates a stripe pattern from the selected colors up to the given row number by default.
 </p>
 
 <form [formGroup]="stripeGeneratorForm" class="form-group" (submit)="submit($event)" [hidden]="printFriendly">
@@ -26,7 +27,7 @@
     <div class="accordion-item">
       <h2 class="accordion-header" id="flush-headingOne">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-          Advanced
+          Advanced Pattern Configuration
         </button>
       </h2>
       <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
@@ -35,12 +36,12 @@
             <div style="display: flex; justify-content: space-between;">
               <label for="rows">Stripe Pattern Configuration</label>
               <div>
-                <button type="button" (click)="appendStripePatternConfigurationItem()" class="btn btn-primary">Add +</button>
-                <button type="button" (click)="popStripePatternConfigurationItem()" class="btn btn-primary">Remove -</button>
-                <button type="button" (click)="resetStripePatternConfigurationItem()" class="btn btn-primary">Reset</button>
+                <button type="button" [disabled]="stripePatternConfigurationControls.length >= 10"(click)="appendStripePatternConfigurationItem()" class="btn btn-primary config-action">Add +</button>
+                <button type="button" [disabled]="stripePatternConfigurationControls.length <= 1" (click)="popStripePatternConfigurationItem()" class="btn btn-primary config-action">Remove -</button>
+                <button type="button" (click)="randomizeStripePatternConfiguration()" class="btn btn-primary config-action">Randomize</button>
+                <button type="button" (click)="resetStripePatternConfigurationItem()" class="btn btn-primary config-action">Reset</button>
               </div>
             </div>
-            <br>
 
             <table class="form-table full">
               <tr>
@@ -48,7 +49,7 @@
                 <th>Used</th>
                 <th>Probability</th>
               </tr>
-              @for (stripConfigItem of stripePatternConfiguration; track $index; let idx = $index) {
+              @for (stripConfigItem of stripePatternConfigurationControls; track $index; let idx = $index) {
               
               <tr class="form-group" [formGroupName]="idx">
                   <td>{{idx + 1}}</td>
@@ -62,7 +63,7 @@
               </tr>
               }
             </table>
-            <small id="colorTwoHelp" class="form-text text-muted">Maximum chunk size: {{stripePatternConfiguration.length}} lines</small>
+            <small id="colorTwoHelp" class="form-text text-muted">Maximum chunk size: {{stripePatternConfigurationControls.length}} lines</small>
           </div>
         </div>
       </div>
