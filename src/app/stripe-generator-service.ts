@@ -22,11 +22,10 @@ export class StripeGeneratorService {
     }
  
     const stripes = [];
-    console.log(colors);
 
     for (let i = 0; i < rows; i++) {
       const lines = this.getRandomArbitrary(1, 4);
-      console.log(this.getRandomArbitrary(0, colors.length - 1));
+
       let colorIndex = this.getRandomArbitrary(0, colors.length);
 
       if (stripes.length != 0 && stripes[stripes.length - 1] === colors[colorIndex]) {

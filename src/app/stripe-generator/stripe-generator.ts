@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import { StripeGeneratorService } from '../stripe-generator-service';
 import { LocalStorageService } from '../local-storage-service';
+import { ColorService } from '../color-service';
 
 @Component({
   selector: 'app-stripe-generator',
@@ -21,7 +22,10 @@ export class StripeGenerator {
 
   pattern: any = [];
 
-  constructor(private stripeGeneratorService: StripeGeneratorService, private localStorageService: LocalStorageService) {
+  constructor(
+    private stripeGeneratorService: StripeGeneratorService, 
+    private localStorageService: LocalStorageService,
+    private colorService: ColorService) {
     
     this.colorOne.setValue(localStorageService.getValueForKeyOrDefault("color-one", this.defaultColorOne));
     this.colorTwo.setValue(localStorageService.getValueForKeyOrDefault("color-two", this.defaultColorTwo));
@@ -30,8 +34,15 @@ export class StripeGenerator {
     this.generatePattern();  
   }
 
+  getColorNameForCode(hexCodeString: string) {
+    return this.colorService.getColorNameByHexCode(hexCodeString);
+  }
+
   submit(e: SubmitEvent) {
     e.preventDefault();
+
+    this.colorOne.setValue(this.colorService.getClosestTextColor(this.colorOne.value || this.defaultColorOne));
+    this.colorTwo.setValue(this.colorService.getClosestTextColor(this.colorTwo.value || this.defaultColorOne));
 
     this.localStorageService.setValueForKey("color-one", this.colorOne.value || this.defaultColorOne);
     this.localStorageService.setValueForKey("color-two", this.colorTwo.value || this.defaultColorTwo);

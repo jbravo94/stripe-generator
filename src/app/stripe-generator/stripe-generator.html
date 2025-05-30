@@ -32,15 +32,14 @@
   </table>
 </form>
 
-
 <br />
 
 <table class="strip-container">
 @for (strip of pattern; track $index) {
     <tr>
-        <td class="stripe-row-numbering">{{$index + 1}}</td>
+        <td class="stripe-row-numbering">{{$index + 1}}.</td>
+        <td class="stripe-row-color-text">{{getColorNameForCode(strip)}}</td>
         <td class="stripe-row" [style]="{'background-color': strip}"></td>
-        <td class="stripe-row-numbering"></td>
     </tr>
 }
 </table>
