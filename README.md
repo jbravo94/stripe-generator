@@ -22,6 +22,7 @@
 # TODO
 * Add multiple colors via extendable list
 * Fix reset for advanced config if less that 4 items
+* Add translation
 * Create PWA (https://medium.com/ngconf/angular-pwa-install-and-configure-858dd8e9fb07)
 
 # Sources
