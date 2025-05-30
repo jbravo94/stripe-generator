@@ -22,6 +22,7 @@
 # TODO
 * Add multiple colors via extendable list
 * Fix reset for advanced config if less that 4 items
+* Create PWA (https://medium.com/ngconf/angular-pwa-install-and-configure-858dd8e9fb07)
 
 # Sources
 * Comprehensive list of color names https://www.w3.org/wiki/CSS3/Color/Extended_color_keywords
